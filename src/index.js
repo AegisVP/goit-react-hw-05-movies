@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from 'components/App';
-import theme from 'components/Common/Theme.jsx';
+import { theme } from 'components/Common/Theme.jsx';
 import './index.css';
+import { ThemeProvider } from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 
 ///////////////////
 // Маршрутизация //
@@ -22,7 +24,9 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <BrowserRouter basename="/goit-react-hw-05-movies/">
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
 );

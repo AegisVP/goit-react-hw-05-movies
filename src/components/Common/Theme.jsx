@@ -24,8 +24,6 @@ export const theme = {
     large: '10px',
     round: '50%',
   },
-  margin: `margin: ${returnParams}`,
-  padding: `padding: ${returnParams}`,
   mp: returnParams,
 };
 
