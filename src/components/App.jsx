@@ -2,8 +2,8 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 
-const Trending = lazy(() => import('./Trending/Trending'));
-const SearchMovies = lazy(() => import('./SearchMovies/SearchMovies'));
+const Home = lazy(() => import('./Home/Home'));
+const Movies = lazy(() => import('./Movies/Movies'));
 const MovieInfo = lazy(() => import('./MovieInfo/MovieInfo'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
 const Cast = lazy(() => import('./Cast/Cast'));
@@ -29,7 +29,7 @@ export const App = () => {
             index
             element={
               <Suspense fallback={<p>Loading...</p>}>
-                <Trending />
+                <Home />
               </Suspense>
             }
           />
@@ -37,7 +37,7 @@ export const App = () => {
             path="movies"
             element={
               <Suspense fallback={<p>Loading...</p>}>
-                <SearchMovies />
+                <Movies />
               </Suspense>
             }
           />

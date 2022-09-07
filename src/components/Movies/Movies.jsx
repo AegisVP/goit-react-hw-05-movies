@@ -1,8 +1,8 @@
 import { useFilmSearch } from 'components/Common/fetchFilms';
-import { Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { StyledMovieList, StyledMovieItem, StyledMovieLink } from '../Common/MovieList.styled';
-import { StyledLabel, StyledInput, StyledButton } from './SearchMovies.styled';
+const SearchForm = lazy(() => import('components/SearchForm/SearchForm'));
+const MovieList = lazy(() => import('components/MovieList/MovieList'));
 
 const SearchMovies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,8 +24,6 @@ const SearchMovies = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramsQuery, paramsPage]);
 
-  // useEffect(() => {}, []);
-
   useEffect(() => {
     newSearch({ query: searchQuery, page: searchPage });
 
@@ -38,31 +36,20 @@ const SearchMovies = () => {
     if (e.currentTarget.query.value !== '') setSearchParams({ query: e.currentTarget.query.value, page: 1 });
   };
 
-  return !filmList.results || filmList.results?.length === 0 ? (
-    <div>
-      <form action="#" method="get" onSubmit={onSubmit}>
-        <StyledLabel>
-          <StyledInput type="text" name="query" autoFocus placeholder="What movie do you wish to find?" />
-          <StyledButton type="submit">🔎</StyledButton>
-        </StyledLabel>
-      </form>
-      {filmList.results?.length === 0 && <p>no films found</p>}
-    </div>
-  ) : (
-    <Suspense fallback={<p>Loading...</p>}>
-      <StyledMovieList>
-        {filmList.results.map(film => {
-          return (
-            <StyledMovieItem key={film.id}>
-              <StyledMovieLink to={`${film.id}`} state={{ from: `/movies?query=${searchQuery}` }}>
-                {film?.original_title}
-              </StyledMovieLink>
-            </StyledMovieItem>
-          );
-        })}
-      </StyledMovieList>
-    </Suspense>
-  );
+  if (!filmList.total_results) {
+    return (
+      <Suspense fallback={<p>Loading...</p>}>
+        <SearchForm onSubmitHandler={onSubmit} />
+        {filmList?.total_results === 0 && <p>Nothing found</p>}
+      </Suspense>
+    );
+  } else {
+    return (
+      <Suspense fallback={<p>Loading...</p>}>
+        <MovieList filmList={filmList} state={{ from: `/movies?query=${searchQuery}`, addPath: '' }} />
+      </Suspense>
+    );
+  }
 };
 
 export default SearchMovies;

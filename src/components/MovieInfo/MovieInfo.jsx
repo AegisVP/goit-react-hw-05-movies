@@ -37,7 +37,7 @@ const MovieInfo = () => {
           Go back
         </Button>
       </Link>
-      {filmData && (
+      {title && overview ? (
         <>
           <MovieTitle>
             {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
@@ -65,7 +65,7 @@ const MovieInfo = () => {
             <Outlet />
           </Suspense>
         </>
-      )}
+      ) : (<p>Loading...</p>)}
     </MovieInfoContainer>
   );
 };

@@ -32,21 +32,18 @@ function returnParams(...sizes) {
 
   const resultArray = [];
 
-  for (const size of sizes) {
-    let index = size;
+  for (let size of sizes) {
 
-    if (index === 0) {
-      resultArray.push('0');
-    } else if (index > 0) {
-      if (index >= this.spacing.length) index = this.spacing.length;
-      resultArray.push(`${this.spacing[index]}px`);
-    } else if (index < 0) {
-      index = index * -1;
-      if (index >= this.spacing.length) index = this.spacing.length;
-      resultArray.push(`-${this.spacing[index]}px`);
-    } else if (index === 'auto') {
-      resultArray.push('auto');
-    }
+    if (size === 0) resultArray.push('0');
+    else if (size > 0) {
+      if (size >= this.spacing.length) size = this.spacing.length;
+      resultArray.push(`${this.spacing[size]}px`);
+    } else if (size < 0) {
+      size = size * -1;
+      if (size >= this.spacing.length) size = this.spacing.length;
+      resultArray.push(`-${this.spacing[size]}px`);
+    } else if (size === 'auto') resultArray.push('auto');
+    
   }
 
   return resultArray.join(' ');
