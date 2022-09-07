@@ -8,7 +8,7 @@ const MovieInfo = lazy(() => import('./MovieInfo/MovieInfo'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
 const Cast = lazy(() => import('./Cast/Cast'));
 
-document.title = 'React hw05 - Movie search';
+document.title = 'React HW05';
 
 export const App = () => {
   return (

@@ -29,6 +29,8 @@ const MovieInfo = () => {
 
   const { title, tagline, poster_path, overview, release_date } = filmData;
 
+  document.title = `React HW05 - Movie info - ${title}`;
+
   return (
     <MovieInfoContainer>
       <Link to={backLinkHref}>
@@ -65,7 +67,9 @@ const MovieInfo = () => {
             <Outlet />
           </Suspense>
         </>
-      ) : (<p>Loading...</p>)}
+      ) : (
+        <p>Loading...</p>
+      )}
     </MovieInfoContainer>
   );
 };

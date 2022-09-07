@@ -37,6 +37,8 @@ const SearchMovies = () => {
   };
 
   if (!filmList.total_results) {
+    document.title = 'React HW05 - Movie search';
+    
     return (
       <Suspense fallback={<p>Loading...</p>}>
         <SearchForm onSubmitHandler={onSubmit} />
@@ -44,6 +46,8 @@ const SearchMovies = () => {
       </Suspense>
     );
   } else {
+    document.title = `React HW05 - Movie search - ${searchQuery}`;
+
     return (
       <Suspense fallback={<p>Loading...</p>}>
         <MovieList filmList={filmList} state={{ from: `/movies?query=${searchQuery}`, addPath: '' }} />

@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 const Trending = () => {
   const [filmList, getFilmList] = useFilmSearch();
 
+  document.title = 'React HW05 - Trending movies';
+
   useEffect(() => {
     getFilmList('trending');
   }, [getFilmList]);
