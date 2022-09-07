@@ -1,13 +1,27 @@
 {
   "files": {
     "main.css": "/goit-react-hw-05-movies/static/css/main.b5320759.css",
-    "main.js": "/goit-react-hw-05-movies/static/js/main.460a9f99.js",
+    "main.js": "/goit-react-hw-05-movies/static/js/main.6fdca924.js",
+    "static/js/563.e6ee12bb.chunk.js": "/goit-react-hw-05-movies/static/js/563.e6ee12bb.chunk.js",
+    "static/js/566.16139811.chunk.js": "/goit-react-hw-05-movies/static/js/566.16139811.chunk.js",
+    "static/js/387.e426396f.chunk.js": "/goit-react-hw-05-movies/static/js/387.e426396f.chunk.js",
+    "static/js/736.42dda676.chunk.js": "/goit-react-hw-05-movies/static/js/736.42dda676.chunk.js",
+    "static/js/359.0742be67.chunk.js": "/goit-react-hw-05-movies/static/js/359.0742be67.chunk.js",
+    "static/js/661.c692988d.chunk.js": "/goit-react-hw-05-movies/static/js/661.c692988d.chunk.js",
+    "static/js/61.72fde5a9.chunk.js": "/goit-react-hw-05-movies/static/js/61.72fde5a9.chunk.js",
     "index.html": "/goit-react-hw-05-movies/index.html",
     "main.b5320759.css.map": "/goit-react-hw-05-movies/static/css/main.b5320759.css.map",
-    "main.460a9f99.js.map": "/goit-react-hw-05-movies/static/js/main.460a9f99.js.map"
+    "main.6fdca924.js.map": "/goit-react-hw-05-movies/static/js/main.6fdca924.js.map",
+    "563.e6ee12bb.chunk.js.map": "/goit-react-hw-05-movies/static/js/563.e6ee12bb.chunk.js.map",
+    "566.16139811.chunk.js.map": "/goit-react-hw-05-movies/static/js/566.16139811.chunk.js.map",
+    "387.e426396f.chunk.js.map": "/goit-react-hw-05-movies/static/js/387.e426396f.chunk.js.map",
+    "736.42dda676.chunk.js.map": "/goit-react-hw-05-movies/static/js/736.42dda676.chunk.js.map",
+    "359.0742be67.chunk.js.map": "/goit-react-hw-05-movies/static/js/359.0742be67.chunk.js.map",
+    "661.c692988d.chunk.js.map": "/goit-react-hw-05-movies/static/js/661.c692988d.chunk.js.map",
+    "61.72fde5a9.chunk.js.map": "/goit-react-hw-05-movies/static/js/61.72fde5a9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b5320759.css",
-    "static/js/main.460a9f99.js"
+    "static/js/main.6fdca924.js"
   ]
 }
