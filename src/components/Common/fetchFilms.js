@@ -8,108 +8,76 @@ const PATH_SEARCH = 'search/movie'; // - пошук фільму за ключо
 const PATH_DETAILS = 'movie'; // - запит повної інформації про фільм для сторінки кінофільму.
 const PATH_CREDITS = 'credits'; // - запит інформації про акторський склад для сторінки кінофільму.
 const PATH_REVIEWS = 'reviews'; // - запит оглядів для сторінки кінофільму.
+const searchParam = new URLSearchParams({ api_key: API_KEY });
 
-// async function fetchFilmData({ path = PATH_SEARCH }) {
-//   const searchParam = new URLSearchParams({ api_key: API_KEY });
+export async function fetchFilmData(movieId, funcCB) {
+  if (!movieId) return;
 
-//   return await axios
-//     .get(`${BASE_URL}${URL_PATH}`)
-//     .then(response => {
-//       if (response.status !== 200) return Promise.reject(`Error: ${response.message}`);
-//       return response.data;
-//     })
-//     .catch(err => {
-//       return Promise.reject(err => {
-//         window.alert('There was an error during last film data request');
-//         console.log(err);
-//       });
-//     });
-// }
+  const filmData = await axios
+    .get(`${BASE_URL}/${PATH_DETAILS}/${movieId}?${searchParam}`)
+    .then(r => r.data)
+    .catch(window.alert);
 
-export const useFilmData = () => {
-  const [movieId, setMovieId] = useState();
-  const [filmData, setFilmData] = useState();
-  const [filmCredits, setFilmCredits] = useState();
-  const [filmReviews, setFilmReviews] = useState();
+  funcCB(filmData);
+}
 
-  async function fetchFilmData(movieId) {
-    const searchParam = new URLSearchParams({ api_key: API_KEY });
+export async function fetchFilmCredits(movieId, funcCB) {
+  if (!movieId) return;
 
-    const filmDataPromise = new Promise((resolve, reject) => {
-      const path = `${BASE_URL}/${PATH_DETAILS}/${movieId}?${searchParam}`;
-      console.log(path);
-      resolve(axios.get(path).then(r => r.data));
-    });
+  const filmCredits = await axios
+    .get(`${BASE_URL}/${PATH_DETAILS}/${movieId}/${PATH_CREDITS}?${searchParam}`)
+    .then(r => r.data.cast.slice(0, 10))
+    .catch(window.alert);
 
-    const filmCreditsPromise = new Promise((resolve, reject) => {
-      const path = `${BASE_URL}/${PATH_DETAILS}/${movieId}/${PATH_CREDITS}?${searchParam}`;
-      console.log(path);
-      resolve(axios.get(path).then(r => r.data));
-    });
+  funcCB(filmCredits);
+}
 
-    const filmReviewsPromise = new Promise((resolve, reject) => {
-      const path = `${BASE_URL}/${PATH_DETAILS}/${movieId}/${PATH_REVIEWS}?${searchParam}`;
-      console.log(path);
-      resolve(axios.get(path).then(r => r.data));
-    });
+export async function fetchFilmReviews(movieId, funcCB) {
+  if (!movieId) return;
 
-    filmDataPromise.then(setFilmData).catch(console.log);
-    filmCreditsPromise.then(setFilmCredits).catch(console.log);
-    filmReviewsPromise.then(setFilmReviews).catch(console.log);
-  }
+  const filmReviews = await axios
+    .get(`${BASE_URL}/${PATH_DETAILS}/${movieId}/${PATH_REVIEWS}?${searchParam}`)
+    .then(r => r.data.results.slice(0, 10))
+    .catch(window.alert);
 
-  useEffect(() => {
-    fetchFilmData(movieId);
-  }, [movieId]);
-
-  const getFilmData = newMovieId => {
-    if (movieId !== parseInt(newMovieId) && !isNaN(newMovieId)) setMovieId(parseInt(newMovieId));
-  };
-
-  const getCredits = () => {
-    return filmCredits;
-  };
-
-  const getReviews = () => {
-    return filmReviews;
-  };
-
-  return [filmData, { getFilmData, getCredits, getReviews }];
-};
+  funcCB(filmReviews);
+}
 
 export const useFilmSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
   const [filmList, setFilmList] = useState({ results: [] });
 
-  async function fetchFilmSearch(query = 'trending', page = 1) {
-    const searchParam = new URLSearchParams({ api_key: API_KEY, page });
-    // console.log('query', query?.length);
-    // console.log(searchParam.toString());
+  async function fetchFilmSearch(query = 'trending') {
+    const searchParam = new URLSearchParams({ api_key: API_KEY, adult: true });
     if (query?.length > 0 && query !== 'trending') searchParam.append('query', query);
-    // console.log(searchParam.toString());
 
-    const filmListPromise = new Promise(resolve => {
-      const URL_PATH = query === 'trending' ? PATH_TRENDING : PATH_SEARCH;
-      // console.log('query', query);
-      // console.log('URL_PATH', URL_PATH);
-      const path = `${BASE_URL}/${URL_PATH}?${searchParam}`;
-      // console.log('path', path);
-      resolve(axios.get(path).then(r => r.data));
-    });
+    const URL_PATH = query === 'trending' ? PATH_TRENDING : PATH_SEARCH;
+    const path = `${BASE_URL}/${URL_PATH}?${searchParam}`;
 
-    filmListPromise.then(setFilmList).catch(console.log);
+    await axios
+      .get(path)
+      .then(r => r.data)
+      .then(setFilmList)
+      .catch(window.alert);
   }
 
-  useEffect(() => {
-    if (searchQuery) fetchFilmSearch(searchQuery, currentPage);
-  }, [searchQuery, currentPage]);
+  // useEffect(() => {
 
-  const newSearch = ({ query = 'trending', page = 1 } = {}) => {
-    // console.log(`saved search: "${searchQuery}", page: ${currentPage}`);
-    // console.log(`new search: "${query}", page:${page}`);
-    if (searchQuery !== query && query?.length >= 0) setSearchQuery(String(query).toLocaleLowerCase().trim());
-    if (!isNaN(page) && parseInt(page) > 0 && parseInt(page) !== currentPage) setCurrentPage(page);
+  // },[])
+
+  useEffect(() => {
+    if (searchQuery) fetchFilmSearch(searchQuery);
+    // else setFilmList([]);
+  }, [searchQuery]);
+
+  const newSearch = ({ query = 'trending' } = {}) => {
+    console.log(`saved search: "${searchQuery}`);
+    console.log(`new search: "${query}" (${query?.length})`);
+    
+    if (searchQuery !== query && query?.length >= 0) {
+      // console.log('setting searchQuery to', query);
+      setSearchQuery(String(query).toLocaleLowerCase().trim());
+    }
   };
 
   return [filmList, newSearch];

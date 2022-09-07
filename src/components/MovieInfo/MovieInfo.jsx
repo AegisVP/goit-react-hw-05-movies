@@ -1,40 +1,72 @@
-// import { } from './MovieInfo.styled';
+import { fetchFilmData } from 'components/Common/fetchFilms';
+import { useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { IoMdArrowRoundBack } from 'react-icons/io';
+import {
+  Button,
+  DescriptionLink,
+  MovieDescription,
+  MovieInfoContainer,
+  MovieLinks,
+  MovieMeta,
+  MovieTitle,
+  MovieYear,
+} from './MovieInfo.styled';
 
-import { useFilmData } from 'components/Common/fetchFilms';
-import { Link, Outlet, useParams } from 'react-router-dom';
-
-export const MovieInfo = () => {
+const MovieInfo = () => {
   const params = useParams();
-  const [filmData, { getFilmData }] = useFilmData();
   const movieId = parseInt(params.movieId);
-  if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
+  const [filmData, setFilmData] = useState([]);
 
-  getFilmData(params.movieId);
+  const location = useLocation();
+  console.log('location:', location);
+  const backLinkHref = location.state?.from ?? '/movies';
+  console.log('backLinkHref:', backLinkHref);
+
+  useEffect(() => {
+    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
+    fetchFilmData(movieId, setFilmData);
+  }, [movieId]);
+
+  console.log('filmData', filmData);
+  const { title, tagline, poster_path, overview, release_date } = filmData;
 
   return filmData ? (
-    <div>
-      <h1>{filmData.title}</h1>
-      <div style={{ display: 'flex' }}>
-        {filmData.poster_path && (
+    <MovieInfoContainer>
+      <Link to={backLinkHref}>
+        <Button>
+          <IoMdArrowRoundBack />
+          Go back
+        </Button>
+      </Link>
+      <MovieTitle>
+        {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
+      </MovieTitle>
+      <MovieMeta>
+        {poster_path && (
           <img
             width="300"
-            alt={filmData.tagline}
-            src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${filmData?.poster_path}`}
+            height="450"
+            alt={tagline}
+            src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${poster_path}`}
           />
         )}
 
-        <div>
-          <p>{filmData.overview}</p>
-        </div>
-      </div>
-      <hr />
-      <Link to="cast">Cast</Link>
-      <br />
-      <Link to="reviews">Reviews</Link>
-      <hr />
+        <MovieDescription>{overview}</MovieDescription>
+      </MovieMeta>
+      <MovieLinks>
+        <DescriptionLink to="cast" state={{ from: `${backLinkHref}` }}>
+          Cast
+        </DescriptionLink>
+        <DescriptionLink to="reviews" state={{ from: `${backLinkHref}` }}>
+          Reviews
+        </DescriptionLink>
+      </MovieLinks>
       <Outlet />
-    </div>
+    </MovieInfoContainer>
   ) : (
     <p>Loading...</p>
   );
 };
+
+export default MovieInfo;

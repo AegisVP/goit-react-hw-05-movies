@@ -2,9 +2,10 @@
 
 import { useFilmSearch } from 'components/Common/fetchFilms';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { StyledMovieList, StyledMovieItem, StyledMovieLink } from '../Common/MovieList.styled';
 
-export const Trending = () => {
+const Trending = () => {
   const [filmList, getFilmList] = useFilmSearch();
 
   useEffect(() => {
@@ -14,12 +15,16 @@ export const Trending = () => {
   console.log(filmList);
 
   return (
-    <ul>
+    <StyledMovieList>
       {filmList.results.map(film => (
-        <li key={film.id}>
-          <Link to={`movies/${film.id}`}>{film.original_title}</Link>
-        </li>
+        <StyledMovieItem key={film.id}>
+          <StyledMovieLink to={`movies/${film.id}`} StyledLink state={{ from: '/' }}>
+            {film.title}
+          </StyledMovieLink>
+        </StyledMovieItem>
       ))}
-    </ul>
+    </StyledMovieList>
   );
 };
+
+export default Trending;
