@@ -79,7 +79,7 @@ export const useFilmSearch = () => {
   };
 
   const emptyFilmList = () => {
-    setFilmList({ results: [] });
+    setFilmList({});
   };
 
   return [filmList, newSearch, emptyFilmList];

@@ -11,13 +11,14 @@ const Trending = () => {
 
   return (
     <StyledMovieList>
-      {filmList.results.map(film => (
-        <StyledMovieItem key={film.id}>
-          <StyledMovieLink to={`movies/${film.id}`} state={{ from: '/' }}>
-            {film.title}
-          </StyledMovieLink>
-        </StyledMovieItem>
-      ))}
+      {filmList.results?.length > 0 &&
+        filmList.results.map(film => (
+          <StyledMovieItem key={film.id}>
+            <StyledMovieLink to={`movies/${film.id}`} state={{ from: '/' }}>
+              {film.title}
+            </StyledMovieLink>
+          </StyledMovieItem>
+        ))}
     </StyledMovieList>
   );
 };

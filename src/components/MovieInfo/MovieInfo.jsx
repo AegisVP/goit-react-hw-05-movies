@@ -1,7 +1,8 @@
 import { fetchFilmData } from 'components/Common/fetchFilms';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import posterPlaceholder from '../../img/film-poster-placeholder.png';
 import {
   Button,
   DescriptionLink,
@@ -22,47 +23,44 @@ const MovieInfo = () => {
   const backLinkHref = location.state?.from ?? '/movies';
 
   useEffect(() => {
-    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
+    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a valid movie identificator</p>;
     fetchFilmData(movieId, setFilmData);
   }, [movieId]);
 
   const { title, tagline, poster_path, overview, release_date } = filmData;
 
-  return filmData ? (
-    <MovieInfoContainer>
-      <Link to={backLinkHref}>
-        <Button>
-          <IoMdArrowRoundBack />
-          Go back
-        </Button>
-      </Link>
-      <MovieTitle>
-        {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
-      </MovieTitle>
-      <MovieMeta>
-        {poster_path && (
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <MovieInfoContainer>
+        <Link to={backLinkHref}>
+          <Button>
+            <IoMdArrowRoundBack />
+            Go back
+          </Button>
+        </Link>
+        <MovieTitle>
+          {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
+        </MovieTitle>
+        <MovieMeta>
           <img
             width="300"
             height="450"
             alt={tagline}
-            src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${poster_path}`}
+            src={poster_path ? `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${poster_path}` : posterPlaceholder}
           />
-        )}
-
-        <MovieDescription>{overview}</MovieDescription>
-      </MovieMeta>
-      <MovieLinks>
-        <DescriptionLink to="cast" state={{ from: `${backLinkHref}` }}>
-          Cast
-        </DescriptionLink>
-        <DescriptionLink to="reviews" state={{ from: `${backLinkHref}` }}>
-          Reviews
-        </DescriptionLink>
-      </MovieLinks>
-      <Outlet />
-    </MovieInfoContainer>
-  ) : (
-    <p>Loading...</p>
+          <MovieDescription>{overview}</MovieDescription>
+        </MovieMeta>
+        <MovieLinks>
+          <DescriptionLink to="cast" state={{ from: `${backLinkHref}` }}>
+            Cast
+          </DescriptionLink>
+          <DescriptionLink to="reviews" state={{ from: `${backLinkHref}` }}>
+            Reviews
+          </DescriptionLink>
+        </MovieLinks>
+        <Outlet />
+      </MovieInfoContainer>
+    </Suspense>
   );
 };
 

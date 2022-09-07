@@ -1,5 +1,5 @@
 import { useFilmSearch } from 'components/Common/fetchFilms';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { StyledMovieList, StyledMovieItem, StyledMovieLink } from '../Common/MovieList.styled';
 import { StyledLabel, StyledInput, StyledButton } from './SearchMovies.styled';
@@ -17,7 +17,7 @@ const SearchMovies = () => {
     const newPageValue = !paramsPage || paramsPage === '' ? 1 : paramsPage;
 
     if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
-    
+
     setSearchQuery(newQueryValue);
     setSearchPage(newPageValue);
 
@@ -38,7 +38,7 @@ const SearchMovies = () => {
     if (e.currentTarget.query.value !== '') setSearchParams({ query: e.currentTarget.query.value, page: 1 });
   };
 
-  return filmList?.results.length === 0 ? (
+  return !filmList.results || filmList.results?.length === 0 ? (
     <div>
       <form action="#" method="get" onSubmit={onSubmit}>
         <StyledLabel>
@@ -46,20 +46,22 @@ const SearchMovies = () => {
           <StyledButton type="submit">🔎</StyledButton>
         </StyledLabel>
       </form>
-      {searchQuery !== '' && <p>no films found</p>}
+      {filmList.results?.length === 0 && <p>no films found</p>}
     </div>
   ) : (
-    <StyledMovieList>
-      {filmList.results.map(film => {
-        return (
-          <StyledMovieItem key={film.id}>
-            <StyledMovieLink to={`${film.id}`} state={{ from: `/movies?query=${searchQuery}` }}>
-              {film?.original_title}
-            </StyledMovieLink>
-          </StyledMovieItem>
-        );
-      })}
-    </StyledMovieList>
+    <Suspense fallback={<p>Loading...</p>}>
+      <StyledMovieList>
+        {filmList.results.map(film => {
+          return (
+            <StyledMovieItem key={film.id}>
+              <StyledMovieLink to={`${film.id}`} state={{ from: `/movies?query=${searchQuery}` }}>
+                {film?.original_title}
+              </StyledMovieLink>
+            </StyledMovieItem>
+          );
+        })}
+      </StyledMovieList>
+    </Suspense>
   );
 };
 
