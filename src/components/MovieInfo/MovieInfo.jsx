@@ -17,7 +17,7 @@ import {
 const MovieInfo = () => {
   const params = useParams();
   const movieId = parseInt(params.movieId);
-  const [filmData, setFilmData] = useState([]);
+  const [filmData, setFilmData] = useState({});
 
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/movies';
@@ -30,37 +30,43 @@ const MovieInfo = () => {
   const { title, tagline, poster_path, overview, release_date } = filmData;
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <MovieInfoContainer>
-        <Link to={backLinkHref}>
-          <Button>
-            <IoMdArrowRoundBack />
-            Go back
-          </Button>
-        </Link>
-        <MovieTitle>
-          {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
-        </MovieTitle>
-        <MovieMeta>
-          <img
-            width="300"
-            height="450"
-            alt={tagline}
-            src={poster_path ? `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${poster_path}` : posterPlaceholder}
-          />
-          <MovieDescription>{overview}</MovieDescription>
-        </MovieMeta>
-        <MovieLinks>
-          <DescriptionLink to="cast" state={{ from: `${backLinkHref}` }}>
-            Cast
-          </DescriptionLink>
-          <DescriptionLink to="reviews" state={{ from: `${backLinkHref}` }}>
-            Reviews
-          </DescriptionLink>
-        </MovieLinks>
-        <Outlet />
-      </MovieInfoContainer>
-    </Suspense>
+    <MovieInfoContainer>
+      <Link to={backLinkHref}>
+        <Button>
+          <IoMdArrowRoundBack />
+          Go back
+        </Button>
+      </Link>
+      {filmData && (
+        <>
+          <MovieTitle>
+            {title} <MovieYear>({String(release_date).slice(0, 4)})</MovieYear>
+          </MovieTitle>
+          <MovieMeta>
+            <img
+              width="300"
+              height="450"
+              alt={tagline}
+              src={
+                poster_path ? `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${poster_path}` : posterPlaceholder
+              }
+            />
+            <MovieDescription>{overview}</MovieDescription>
+          </MovieMeta>
+          <MovieLinks>
+            <DescriptionLink to="cast" state={{ from: `${backLinkHref}` }}>
+              Cast
+            </DescriptionLink>
+            <DescriptionLink to="reviews" state={{ from: `${backLinkHref}` }}>
+              Reviews
+            </DescriptionLink>
+          </MovieLinks>
+          <Suspense fallback={<p>Loading...</p>}>
+            <Outlet />
+          </Suspense>
+        </>
+      )}
+    </MovieInfoContainer>
   );
 };
 
