@@ -7,44 +7,47 @@ import { StyledLabel, StyledInput, StyledButton } from './SearchMovies.styled';
 const SearchMovies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchPage, setSearchPage] = useState('');
   const [filmList, newSearch] = useFilmSearch();
   const paramsQuery = searchParams.get('query');
+  const paramsPage = searchParams.get('page');
 
   useEffect(() => {
-    console.log('useEffect: paramsQuery:', paramsQuery);
-    let newQuery = '';
-    if (paramsQuery && paramsQuery.length > 0) newQuery = paramsQuery;
+    const newQueryValue = paramsQuery || '';
+    const newPageValue = !paramsPage || paramsPage === '' ? 1 : paramsPage;
 
-    setSearchQuery(newQuery);
-    newSearch({ query: newQuery, page: 1 });
+    if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
+    
+    setSearchQuery(newQueryValue);
+    setSearchPage(newPageValue);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paramsQuery, paramsPage]);
 
-  console.log('body: paramsQuery:', paramsQuery);
+  // useEffect(() => {}, []);
+
+  useEffect(() => {
+    newSearch({ query: searchQuery, page: searchPage });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, searchPage]);
 
   const onSubmit = e => {
     e?.preventDefault();
 
-    const params = { query: searchQuery, page: 1 };
-
-    setSearchParams(params);
-    newSearch(params);
+    if (e.currentTarget.query.value !== '') setSearchParams({ query: e.currentTarget.query.value, page: 1 });
   };
 
   return filmList?.results.length === 0 ? (
-    <form action="#" method="get" onSubmit={onSubmit}>
-      <StyledLabel>
-        <StyledInput
-          type="text"
-          name="query"
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.currentTarget.value)}
-          placeholder="What movie do you wish to find?"
-        />
-        <StyledButton type="submit">🔎</StyledButton>
-      </StyledLabel>
-    </form>
+    <div>
+      <form action="#" method="get" onSubmit={onSubmit}>
+        <StyledLabel>
+          <StyledInput type="text" name="query" autoFocus placeholder="What movie do you wish to find?" />
+          <StyledButton type="submit">🔎</StyledButton>
+        </StyledLabel>
+      </form>
+      {searchQuery !== '' && <p>no films found</p>}
+    </div>
   ) : (
     <StyledMovieList>
       {filmList.results.map(film => {

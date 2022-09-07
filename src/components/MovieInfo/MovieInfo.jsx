@@ -19,16 +19,13 @@ const MovieInfo = () => {
   const [filmData, setFilmData] = useState([]);
 
   const location = useLocation();
-  console.log('location:', location);
   const backLinkHref = location.state?.from ?? '/movies';
-  console.log('backLinkHref:', backLinkHref);
 
   useEffect(() => {
     if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
     fetchFilmData(movieId, setFilmData);
   }, [movieId]);
 
-  console.log('filmData', filmData);
   const { title, tagline, poster_path, overview, release_date } = filmData;
 
   return filmData ? (

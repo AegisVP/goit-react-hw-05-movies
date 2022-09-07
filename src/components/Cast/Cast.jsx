@@ -13,8 +13,6 @@ const Cast = () => {
     fetchFilmCredits(movieId, setCredits);
   }, [movieId]);
 
-  console.log('credits', credits);
-
   return (
     <CastList>
       {credits && credits.length > 0 ? (

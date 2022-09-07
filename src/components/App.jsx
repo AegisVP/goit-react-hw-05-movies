@@ -1,14 +1,6 @@
 import { lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { SharedLayout } from './SharedLayout';
-
-// const createAsyncComponent = path => {
-//   // const componentName = path.match(/[a-zA-Z]+$/)[0];
-//   // console.log('componentName:', componentName);
-//   // return lazy(() => import(path).then(module => ({ ...module, default: module[componentName] })));
-
-//   return lazy(() => import(path));
-// };
+import { SharedLayout } from './SharedLayout/SharedLayout';
 
 const Trending = lazy(() => import('./Trending/Trending'));
 const SearchMovies = lazy(() => import('./SearchMovies/SearchMovies'));

@@ -11,10 +11,7 @@ const Reviews = () => {
   useEffect(() => {
     if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
     fetchFilmReviews(movieId, setReviews);
-    console.log('running useEffect');
   }, [movieId]);
-
-  console.log('reviews', reviews);
 
   return (
     <ReviewList>

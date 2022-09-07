@@ -45,11 +45,14 @@ export async function fetchFilmReviews(movieId, funcCB) {
 
 export const useFilmSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchPage, setSearchPage] = useState('');
   const [filmList, setFilmList] = useState({ results: [] });
 
-  async function fetchFilmSearch(query = 'trending') {
-    const searchParam = new URLSearchParams({ api_key: API_KEY, adult: true });
-    if (query?.length > 0 && query !== 'trending') searchParam.append('query', query);
+  async function fetchFilmList({ query = 'trending', page = 1 }) {
+    if (query?.length > 0 && query !== 'trending') {
+      searchParam.set('query', query);
+      searchParam.set('page', page);
+    }
 
     const URL_PATH = query === 'trending' ? PATH_TRENDING : PATH_SEARCH;
     const path = `${BASE_URL}/${URL_PATH}?${searchParam}`;
@@ -61,26 +64,25 @@ export const useFilmSearch = () => {
       .catch(window.alert);
   }
 
-  // useEffect(() => {
-
-  // },[])
-
   useEffect(() => {
-    if (searchQuery) fetchFilmSearch(searchQuery);
-    // else setFilmList([]);
-  }, [searchQuery]);
+    if (searchQuery) fetchFilmList({ query: searchQuery, page: searchPage });
+    else emptyFilmList();
+  }, [searchQuery, searchPage]);
 
-  const newSearch = ({ query = 'trending' } = {}) => {
-    console.log(`saved search: "${searchQuery}`);
-    console.log(`new search: "${query}" (${query?.length})`);
-    
-    if (searchQuery !== query && query?.length >= 0) {
-      // console.log('setting searchQuery to', query);
-      setSearchQuery(String(query).toLocaleLowerCase().trim());
+  const newSearch = ({ query = 'trending', page = 1 } = {}) => {
+    if (searchQuery !== query) {
+      setSearchQuery(query?.trim().toLocaleLowerCase());
+      setSearchPage(page);
+
+      if (!(query?.length >= 0)) emptyFilmList();
     }
   };
 
-  return [filmList, newSearch];
+  const emptyFilmList = () => {
+    setFilmList({ results: [] });
+  };
+
+  return [filmList, newSearch, emptyFilmList];
 };
 
 // export default fetchFilmData;
