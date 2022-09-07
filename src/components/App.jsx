@@ -1,14 +1,14 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 
 const Trending = lazy(() => import('./Trending/Trending'));
 const SearchMovies = lazy(() => import('./SearchMovies/SearchMovies'));
+const MovieInfo = lazy(() => import('./MovieInfo/MovieInfo'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
 const Cast = lazy(() => import('./Cast/Cast'));
-const MovieInfo = lazy(() => import('./MovieInfo/MovieInfo'));
 
-document.title = "React hw05 - Movie search";
+document.title = 'React hw05 - Movie search';
 
 export const App = () => {
   return (
@@ -25,9 +25,30 @@ export const App = () => {
     >
       <Routes>
         <Route path="/" element={<SharedLayout />}>
-          <Route index element={<Trending />} />
-          <Route path="movies" element={<SearchMovies />} />
-          <Route path="movies/:movieId" element={<MovieInfo />}>
+          <Route
+            index
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <Trending />
+              </Suspense>
+            }
+          />
+          <Route
+            path="movies"
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <SearchMovies />
+              </Suspense>
+            }
+          />
+          <Route
+            path="movies/:movieId"
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <MovieInfo />
+              </Suspense>
+            }
+          >
             <Route path="cast" element={<Cast />} />
             <Route path="reviews" element={<Reviews />} />
           </Route>
