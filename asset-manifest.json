@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/goit-react-hw-05-movies/static/css/main.b5320759.css",
-    "main.js": "/goit-react-hw-05-movies/static/js/main.bdb85be0.js",
+    "main.js": "/goit-react-hw-05-movies/static/js/main.bbb3da6a.js",
     "static/js/842.5cd2cde8.chunk.js": "/goit-react-hw-05-movies/static/js/842.5cd2cde8.chunk.js",
-    "static/js/115.60b1f76f.chunk.js": "/goit-react-hw-05-movies/static/js/115.60b1f76f.chunk.js",
+    "static/js/115.a3294ecb.chunk.js": "/goit-react-hw-05-movies/static/js/115.a3294ecb.chunk.js",
     "static/js/465.cad732f2.chunk.js": "/goit-react-hw-05-movies/static/js/465.cad732f2.chunk.js",
     "static/js/387.3fed80c8.chunk.js": "/goit-react-hw-05-movies/static/js/387.3fed80c8.chunk.js",
     "static/js/736.85043015.chunk.js": "/goit-react-hw-05-movies/static/js/736.85043015.chunk.js",
@@ -14,9 +14,9 @@
     "static/media/film-poster-placeholder.png": "/goit-react-hw-05-movies/static/media/film-poster-placeholder.9a8182eb4c8ae70fe602.png",
     "index.html": "/goit-react-hw-05-movies/index.html",
     "main.b5320759.css.map": "/goit-react-hw-05-movies/static/css/main.b5320759.css.map",
-    "main.bdb85be0.js.map": "/goit-react-hw-05-movies/static/js/main.bdb85be0.js.map",
+    "main.bbb3da6a.js.map": "/goit-react-hw-05-movies/static/js/main.bbb3da6a.js.map",
     "842.5cd2cde8.chunk.js.map": "/goit-react-hw-05-movies/static/js/842.5cd2cde8.chunk.js.map",
-    "115.60b1f76f.chunk.js.map": "/goit-react-hw-05-movies/static/js/115.60b1f76f.chunk.js.map",
+    "115.a3294ecb.chunk.js.map": "/goit-react-hw-05-movies/static/js/115.a3294ecb.chunk.js.map",
     "465.cad732f2.chunk.js.map": "/goit-react-hw-05-movies/static/js/465.cad732f2.chunk.js.map",
     "387.3fed80c8.chunk.js.map": "/goit-react-hw-05-movies/static/js/387.3fed80c8.chunk.js.map",
     "736.85043015.chunk.js.map": "/goit-react-hw-05-movies/static/js/736.85043015.chunk.js.map",
@@ -27,6 +27,6 @@
   },
   "entrypoints": [
     "static/css/main.b5320759.css",
-    "static/js/main.bdb85be0.js"
+    "static/js/main.bbb3da6a.js"
   ]
 }
