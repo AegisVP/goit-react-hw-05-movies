@@ -14,7 +14,7 @@ const SearchMovies = () => {
 
   useEffect(() => {
     const newQueryValue = paramsQuery || '';
-    const newPageValue = !paramsPage || paramsPage === '' || paramsPage <= 0 ? 1 : paramsPage;
+    const newPageValue = !paramsPage || paramsPage === '' || paramsPage <= 0 || !isNaN(paramsPage) ? 1 : paramsPage;
 
     if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
 
