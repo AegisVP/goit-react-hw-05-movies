@@ -12,9 +12,11 @@ const SearchMovies = () => {
   const paramsQuery = searchParams.get('query');
   const paramsPage = searchParams.get('page');
 
+  const isPositiveNumber = n => !(isNaN(parseInt(n)) || !n || n === '' || n <= 0);
+
   useEffect(() => {
     const newQueryValue = paramsQuery || '';
-    const newPageValue = !paramsPage || paramsPage === '' || paramsPage <= 0 || !isNaN(paramsPage) ? 1 : paramsPage;
+    const newPageValue = isPositiveNumber(paramsPage) ? parseInt(paramsPage) : 1;
 
     if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
 
