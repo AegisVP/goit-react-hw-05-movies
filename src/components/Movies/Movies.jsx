@@ -16,7 +16,7 @@ const SearchMovies = () => {
 
   useEffect(() => {
     const newQueryValue = paramsQuery || '';
-    const newPageValue = isPositiveNumber(paramsPage) ? parseInt(paramsPage) : 1;
+    const newPageValue = isPositiveNumber(paramsPage) ? paramsPage : 1;
 
     if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
 
