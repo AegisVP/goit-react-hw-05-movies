@@ -1,16 +1,15 @@
-import { useFilmSearch } from 'components/Common/fetchFilms';
+import { fetchTrendingFilms } from 'utils/fetchFilms';
 import MovieList from 'components/MovieList/MovieList';
-import { useEffect } from 'react';
-// import { StyledMovieList, StyledMovieItem, StyledMovieLink } from '../MovieList/MovieList.styled';
+import { useState, useEffect } from 'react';
 
 const Trending = () => {
-  const [filmList, getFilmList] = useFilmSearch();
+  const [filmList, setFilmList] = useState([]);
 
   document.title = 'React HW05 - Trending movies';
 
   useEffect(() => {
-    getFilmList('trending');
-  }, [getFilmList]);
+    fetchTrendingFilms().then(setFilmList);
+  }, []);
 
   return filmList?.total_results && <MovieList filmList={filmList} state={{ from: '/', addPath: 'movies/' }} />;
 };

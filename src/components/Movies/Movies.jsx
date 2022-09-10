@@ -1,46 +1,38 @@
-import { useFilmSearch } from 'components/Common/fetchFilms';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { fetchFilmList } from 'utils/fetchFilms';
+import { isPositiveNumber } from 'utils/isPositiveNumber';
+
 const SearchForm = lazy(() => import('components/SearchForm/SearchForm'));
 const MovieList = lazy(() => import('components/MovieList/MovieList'));
 
 const SearchMovies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchPage, setSearchPage] = useState('');
-  const [filmList, newSearch] = useFilmSearch();
-  const paramsQuery = searchParams.get('query');
-  const paramsPage = searchParams.get('page');
+  const [searchPage, setSearchPage] = useState(1);
+  const [filmList, setFilmList] = useState([]);
 
-  const isPositiveNumber = n => !(isNaN(parseInt(n)) || !n || n === '' || n <= 0);
+  const paramsQuery = searchParams.get('query') || '';
+  const paramsPage = parseInt(isPositiveNumber(searchParams.get('page')) || 1);
 
-  useEffect(() => {
-    const newQueryValue = paramsQuery || '';
-    const newPageValue = isPositiveNumber(paramsPage) ? paramsPage : 1;
-
-    if (newQueryValue !== '') setSearchParams({ query: newQueryValue, page: newPageValue });
-
-    setSearchQuery(newQueryValue);
-    setSearchPage(newPageValue);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsQuery, paramsPage]);
+  if (paramsQuery !== searchQuery) setSearchQuery(paramsQuery);
+  if (paramsPage !== searchPage) setSearchPage(paramsPage);
 
   useEffect(() => {
-    newSearch({ query: searchQuery, page: searchPage });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (searchQuery === '') setFilmList({});
+    else fetchFilmList({ query: searchQuery, page: searchPage }).then(setFilmList);
   }, [searchQuery, searchPage]);
 
   const onSubmit = e => {
     e?.preventDefault();
+    const searchValue = String(e.currentTarget.query.value).trim();
 
-    if (e.currentTarget.query.value !== '') setSearchParams({ query: e.currentTarget.query.value, page: 1 });
+    if (searchValue !== '') setSearchParams({ query: searchValue, page: 1 });
   };
 
   if (!filmList.total_results) {
     document.title = 'React HW05 - Movie search';
-    
+
     return (
       <Suspense fallback={<p>Loading...</p>}>
         <SearchForm onSubmitHandler={onSubmit} />

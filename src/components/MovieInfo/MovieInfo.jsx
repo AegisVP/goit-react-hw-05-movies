@@ -1,4 +1,4 @@
-import { fetchFilmData } from 'components/Common/fetchFilms';
+import { fetchFilmData } from 'utils/fetchFilms';
 import { Suspense, useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
@@ -23,8 +23,7 @@ const MovieInfo = () => {
   const backLinkHref = location.state?.from ?? '/movies';
 
   useEffect(() => {
-    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a valid movie identificator</p>;
-    fetchFilmData(movieId, setFilmData);
+    fetchFilmData(movieId).then(setFilmData);
   }, [movieId]);
 
   const { title, tagline, poster_path, overview, release_date } = filmData;

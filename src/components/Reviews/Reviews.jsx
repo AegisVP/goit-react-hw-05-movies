@@ -1,4 +1,4 @@
-import { fetchFilmReviews } from 'components/Common/fetchFilms';
+import { fetchFilmReviews } from 'utils/fetchFilms';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ReviewList, Author, Comment, ReviewItem } from './Reviews.styled';
@@ -9,8 +9,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
-    fetchFilmReviews(movieId, setReviews);
+    fetchFilmReviews(movieId).then(setReviews);
   }, [movieId]);
 
   return (

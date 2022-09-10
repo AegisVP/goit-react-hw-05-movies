@@ -1,4 +1,4 @@
-import { fetchFilmCredits } from 'components/Common/fetchFilms';
+import { fetchFilmCredits } from 'utils/fetchFilms';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ActorName, CastItem, CastList, CastMeta, CharacterName, Span } from './Cast.styled';
@@ -9,8 +9,7 @@ const Cast = () => {
   const [credits, setCredits] = useState([]);
 
   useEffect(() => {
-    if (isNaN(movieId) || typeof movieId !== 'number') return <p>Not a number</p>;
-    fetchFilmCredits(movieId, setCredits);
+    fetchFilmCredits(movieId).then(setCredits);
   }, [movieId]);
 
   return (
